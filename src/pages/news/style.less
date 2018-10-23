@@ -1,0 +1,41 @@
+@import "~utils/base.less";
+
+.homePage {
+  .publishTime {
+    text-align: center;
+    & > span {
+      font-size: 21/@rem;
+      background-color: #cecece;
+      padding: 5/@rem 15/@rem;
+      color: #fff;
+      border-radius: 10/@rem;
+    }
+  }
+  .more {
+    text-align: center;
+    & > span {
+      border: 1px solid #cecece;
+      color: #bbb;
+      padding: 10/@rem 30/@rem;
+      border-radius: 30/@rem;
+    }
+  }
+  :global {
+    .am-card-header {
+      padding: 0;
+      overflow: hidden;
+    }
+    .am-card-header-content img {
+      margin-right: 0;
+      height: 400/@rem;
+    }
+    .am-card-footer-content {
+      max-height: 16px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+}
+
+

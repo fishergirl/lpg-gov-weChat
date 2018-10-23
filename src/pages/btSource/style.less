@@ -1,0 +1,91 @@
+@import "~utils/base.less";
+
+.selectArea {
+  h2 {
+    text-align: center;
+    font-size: 48/@rem;
+    color: #1890ff;
+    padding: 30/@rem 0 50/@rem;
+  }
+  p {
+    text-indent: 0.3rem;
+    margin-bottom: 0.2rem !important;
+  }
+  .add_btn{
+    margin-top: 60/@rem;
+  }
+  :global {
+    .am-list-item .am-input-control input {
+      text-align: right;
+    }
+  }
+}
+
+.page{
+  padding: 60/@rem 45/@rem;
+  p {
+    font-size: 64/@rem;
+    font-weight: bold;
+    margin-bottom: 200/@rem !important;
+  }
+  .area {
+    overflow: hidden;
+    height: 60/@rem;
+    margin-bottom: 20/@rem;
+    .areaTitle {
+      float: left;
+      font-size: 36/@rem;
+      height: 60/@rem;
+      line-height: 60/@rem;
+    }
+    .stepBtn {
+      float: right;
+    }
+    :global {
+      .am-button {
+        display: inline-block !important;
+        padding: 0 36/@rem;
+        border: solid 2/@rem #dadada;
+        color: #999;
+        font-size: 26/@rem;
+        height: 60/@rem;
+        line-height: 60/@rem;
+      }
+      .am-button::before {
+        height: auto;
+        border: none;
+      }
+    }
+  }
+  :global{
+    .am-list-line {
+      border-bottom: 4/@rem solid #cecece !important;
+    }
+    .am-button-primary,.am-button-active{
+      background: #1890ff !important;
+      border-radius: 30px;
+      &>span{
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+    }
+    .am-button-primary.am-button-active{
+      border-radius: 30px;
+      background: #1890ff !important;
+    }
+  }
+}
+ :global {
+   .am-picker {
+     &>div:last-child {
+       display: none !important;
+     }
+   }
+ }
+
+.noData {
+  text-align: center;
+  position: absolute;
+  top: 40%;
+  Left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}

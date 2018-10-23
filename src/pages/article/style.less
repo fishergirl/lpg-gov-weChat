@@ -1,0 +1,26 @@
+@import "~utils/base.less";
+
+.article {
+  padding: 30/@rem;
+  overflow: hidden;
+  h2 {
+    font-size: 62/@rem;
+    color: #333;
+  }
+  .author, .uploadDt {
+    font-size: 40/@rem;
+    color: #b3b3b3;
+  }
+  .content {
+    color: #333;
+    margin-top: 50/@rem;
+    p {
+      font-size: 40/@rem;
+    }
+  }
+  :global {
+    img, audio, video {
+      max-width: 100%;
+    }
+  }
+}
