@@ -1,10 +1,12 @@
-import { queryArticles, queryArticle, saveBtAreaCode } from '../../../services/api';
+import { Toast } from 'antd-mobile';
+import { queryArticles, queryArticle, queryScanRes } from '../../../services/api';
+import {wxScan} from '../../../utils/wx'
 
 export default {
   namespace: 'main',
 
   state: {
-    areaCode: '',
+    scanResData: undefined,
     articleLists: [], // 文章列表
     articleData: {}, // 获取某一篇文章详情
     articlesData: {}, // 获取文章列表信息
@@ -13,13 +15,21 @@ export default {
   },
 
   effects: {
-    // 保存钢瓶地区
-    * saveBtArea({ payload }, {call, put}) {
-      const res = yield call(saveBtAreaCode, payload);
+    // 提交扫码信息 获取扫码后的结果
+    * submitScanInfo({ payload }, {call, put}) {
+      const scanRes = yield call(wxScan);
+      if (scanRes.indexOf('http://mai.haoyunqi.com.cn')===-1 && scanRes.indexOf('http://')!==-1){
+        // Toast.fail('编码有误！');
+        return;
+      }
+      const res = yield call(queryScanRes, {
+        ...payload,
+        resultStr: scanRes,
+      });
       yield put({
         type: 'changeState',
         payload: {
-          areaCode: res.data,
+          scanResData: res.data,
         }
       })
     },

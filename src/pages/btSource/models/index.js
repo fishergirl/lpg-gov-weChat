@@ -1,4 +1,4 @@
-import { queryBtSourceRes } from '../../../services/api'
+import { queryBtSourceRes, getScanBtSourceRes } from '../../../services/api'
 
 export default {
   namespace: 'btSource',
@@ -10,6 +10,15 @@ export default {
   effects: {
     * getBtSourceRes({ payload }, {call, put}) {
       const res = yield call(queryBtSourceRes, payload);
+      yield put({
+        type: 'changeState',
+        payload: {
+          btSourceRes: res.data
+        }
+      })
+    },
+    * getScanBtSourceRes({ payload }, {call, put}) {
+      const res = yield call(queryScanBtSourceRes, payload);
       yield put({
         type: 'changeState',
         payload: {

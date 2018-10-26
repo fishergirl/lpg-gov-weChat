@@ -1,13 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
-import router from 'umi/router'
+import { routerRedux } from 'dva/router';
 import DocumentTitle from 'react-document-title'
 import {
   ActivityIndicator, List, InputItem, Button, WingBlank, Toast, Tabs, Picker
 } from 'antd-mobile'
 import styles from './style.less'
 import cityData from '../../utils/cityData'
-import {wxScan} from '../../utils/wx'
 
 @connect(({ main, global, loading }) => {
   return {
@@ -22,10 +21,6 @@ export default class ScanBtCode extends Component {
     pickerValue: null
   };
 
-  componentDidMount() {
-
-  }
-
   // 提交
   submit = () => {
     const {dispatch} = this.props;
@@ -34,10 +29,18 @@ export default class ScanBtCode extends Component {
     }else{
       const areaCodeArr = this.state.pickerValue.join(',').split(',')[1];
       dispatch({
-        type:'main/saveBtArea',
-        payload: areaCodeArr,
-      })
-      // wxScan();
+        type:'main/submitScanInfo',
+        payload: {
+          areaCode: areaCodeArr,
+        },
+      }).then(()=>{
+        const {main:{scanResData}} = this.props;
+        if(scanResData && typeof (scanResData)=== 'string') {
+          window.location.href = scanResData;
+        } else {
+          dispatch(routerRedux.push('/btSource/scanBtRes'));
+        }
+      });
     }
   };
 

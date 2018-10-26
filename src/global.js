@@ -10,8 +10,8 @@ window.onbeforeunload = ()=>{
   sessionStorage.setItem('dva_initState',JSON.stringify(initState))
 };
 
-// import {wxConfig} from "./utils/wx";
-// wxConfig();
+import {wxConfig} from "./utils/wx";
+wxConfig();
 
 if(showVConsole) { //引入vConsole调试器
   let script = document.createElement('script');

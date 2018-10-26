@@ -63,7 +63,6 @@ export default function request( options, timeout = 10000) {
         break;
     }
     axios(data).then((resp) => {
-      console.log(222)
       if(resp.data.status === 200 || resp.data.status === 'ok'){
         resolve(resp.data);
         window.onToast = false;
