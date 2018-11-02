@@ -1,30 +1,30 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import {connect} from 'dva'
 import DocumentTitle from 'react-document-title'
 import { getPageQuery, distanceNow } from '../../utils/utils'
 import styles from './style.less'
 
-@connect(({ main, loading }) => {
+@connect(({ global, loading }) => {
   return {
-    main,
-    loading: loading.effects['main/getArticle'],
+    global,
+    loading: loading.effects['global/getArticle'],
   }
 })
 class ArticleView extends Component {
   componentDidMount() {
     const id = getPageQuery().id;
     this.props.dispatch({
-      type:'main/getArticle',
+      type:'global/getArticle',
       payload: {
         id: parseInt(id),
       },
     }).then(()=>{
-      const {main: {articleData}} = this.props;
+      const {global: {articleData}} = this.props;
       this.contentRef.innerHTML = articleData.adviceDesc;
     })
   }
   render() {
-    const {main: {articleData}} = this.props;
+    const {global: {articleData}} = this.props;
     return (
       <DocumentTitle title="">
         <div className={styles.article}>

@@ -1,22 +1,21 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router';
 import DocumentTitle from 'react-document-title'
 import {
-  ActivityIndicator, List, InputItem, Button, WingBlank, Toast, Tabs, Picker
+  List, Button, WingBlank, Toast, Picker
 } from 'antd-mobile'
 import styles from './style.less'
 import cityData from '../../utils/cityData'
 
-@connect(({ main, global, loading }) => {
+@connect(({ global, loading }) => {
   return {
-    main,
     global,
-    loading: loading.models.main,
+    loading: loading.models.global,
   };
 })
 
-export default class ScanBtCode extends Component {
+class ScanBtCode extends Component {
   state = {
     pickerValue: null
   };
@@ -29,12 +28,12 @@ export default class ScanBtCode extends Component {
     }else{
       const areaCodeArr = this.state.pickerValue.join(',').split(',')[1];
       dispatch({
-        type:'main/submitScanInfo',
+        type:'global/submitScanInfo',
         payload: {
           areaCode: areaCodeArr,
         },
       }).then(()=>{
-        const {main:{scanResData}} = this.props;
+        const {global:{scanResData}} = this.props;
         if(scanResData && typeof (scanResData)=== 'string') {
           window.location.href = scanResData;
         } else {
@@ -73,3 +72,4 @@ export default class ScanBtCode extends Component {
   }
 }
 
+export default ScanBtCode;

@@ -41,10 +41,10 @@ export default function request( options, timeout = 10000) {
     if(process.env.NODE_ENV === 'production'){
       url = url.replace(/^\/api/,'').replace(/^\/mock/,'')
     }
-    // console.log(process.env.NODE_ENV ,url);
+    console.log(process.env.NODE_ENV ,url);
     let data = {
       method: options.method || "GET",
-      url: options.url,
+      url: url,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',

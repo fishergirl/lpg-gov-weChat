@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'dva'
 import router from 'umi/router'
 import DocumentTitle from 'react-document-title'
@@ -9,15 +9,14 @@ import styles from './style.less'
 import { reg_btCode } from '../../utils/config'
 import cityData from '../../utils/cityData';
 
-@connect(({ main, global, loading }) => {
+@connect(({ global, loading }) => {
   return {
-    main,
     global,
-    loading: loading.models.main,
+    loading: loading.models.global,
   };
 })
 
-export default class SearchBtCode extends Component {
+class SearchBtCode extends Component {
   state = {
     pickerValue: null
   };
@@ -73,3 +72,5 @@ export default class SearchBtCode extends Component {
     );
   }
 }
+
+export default SearchBtCode;

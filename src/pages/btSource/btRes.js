@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import {connect} from 'dva'
 import DocumentTitle from 'react-document-title'
 import {
-  ActivityIndicator, List, InputItem, Button, WingBlank, Toast
+  List
 } from 'antd-mobile'
 import { getPageQuery } from '../../utils/utils'
 import dateFtt from '../../utils/dateFtt'
@@ -13,10 +13,10 @@ const Item = List.Item;
 @connect(({ btSource, loading }) => {
   return {
     btSource,
-    loading: loading.effects['btSource/getBtSourceRes'],
+    loading: loading.effects['btSource/getBtSourceRes'] || false,
   }
 })
-export default class BtRes extends Component {
+class BtRes extends Component {
   componentDidMount() {
     const btCode = getPageQuery().btCode;
     const areaCode = getPageQuery().areaCode;
@@ -29,11 +29,11 @@ export default class BtRes extends Component {
     })
   }
   render() {
-    const {btSource: {btSourceRes}} = this.props;
+    const {btSource: {btSourceRes}, loading} = this.props;
     return (
       <DocumentTitle title="查询结果" className={styles.result}>
         <div>
-          {btSourceRes.length === 0 && (
+          {btSourceRes.length === 0 && !loading && (
             <div className={styles.noData}>
               <img src={noDataImg} alt="" width="100%" />
               <div>抱歉，没有找到信息……</div>
@@ -65,5 +65,6 @@ export default class BtRes extends Component {
       </DocumentTitle>
     );
   }
-
 }
+
+export default BtRes;

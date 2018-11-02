@@ -2,6 +2,7 @@ const path = require('path');
 // ref: https://umijs.org/config/
 export default {
   history: 'hash',
+  publicPath: '/wechat/',
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
@@ -42,14 +43,14 @@ export default {
   },
   "proxy": {
     "/api": {
-      "target": "http://192.168.2.77:10120",
+      "target": "http://lpg-gov.haoyunqi.com.cn",
       "changeOrigin": true,
       pathRewrite: {
         '^/api': ''
       }
     },
     "/wechat": {
-      "target": "http://192.168.2.77:10120",
+      "target": "http://lpg-gov.haoyunqi.com.cn",
       "changeOrigin": true,
     },
   },

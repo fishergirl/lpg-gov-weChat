@@ -1,26 +1,26 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import {connect} from 'dva'
 import DocumentTitle from 'react-document-title'
 import {
-  ActivityIndicator, List, InputItem, Button, WingBlank, Toast
+  List
 } from 'antd-mobile'
 import dateFtt from '../../utils/dateFtt'
 import styles from './style.less'
 import noDataImg from '../../assets/noData.png'
 
 const Item = List.Item;
-@connect(({ main }) => {
+@connect(({ global }) => {
   return {
-    main,
+    global,
   }
 })
-export default class ScanBtRes extends Component {
+class ScanBtRes extends Component {
   render() {
-    const {main: {scanResData}} = this.props;
+    const {global: {scanResData}} = this.props;
     return (
       <DocumentTitle title="查询结果" className={styles.result}>
         <div>
-          {scanResData.length === 0 && (
+          {((scanResData &&  scanResData.length === 0) || (scanResData === undefined)) && (
             <div className={styles.noData}>
               <img src={noDataImg} alt="" width="100%" />
               <div>抱歉，没有找到信息……</div>
@@ -52,5 +52,6 @@ export default class ScanBtRes extends Component {
       </DocumentTitle>
     );
   }
-
 }
+
+export default ScanBtRes;

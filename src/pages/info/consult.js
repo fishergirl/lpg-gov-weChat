@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'dva'
 import moment from 'moment';
 import router from 'umi/router'
@@ -6,15 +6,13 @@ import DocumentTitle from 'react-document-title'
 import {
   Card, WingBlank, WhiteSpace
 } from 'antd-mobile'
-import styles from '../news/style.less'
+import styles from './style.less'
+import noDataImg from '../../assets/noData.png';
 
-let list = [];
-
-@connect(({ main, global, loading }) => {
+@connect(({ global, loading }) => {
   return {
-    main,
     global,
-    loading: loading.models.main,
+    loading: loading.effects['global/getArticles'] || false,
   };
 })
 
@@ -22,24 +20,22 @@ class Consult extends Component {
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch({
-      type:'main/getArticles',
+      type:'global/getArticles',
       payload: {
         afficheType: 3
       },
-    }).then(()=>{
-      const {main: {articlesData}} = this.props;
-      dispatch({
-        type:'main/articleList',
-        payload: list.concat(articlesData.list),
-      })
     })
   }
 
   componentWillUnmount() {
     this.props.dispatch({
-      type: 'main/changeState',
-      payload: {current: 1, pageSize: 5, articleLists: []},
-    });
+      type:'global/initCurrent',
+      payload: {
+        current: 1,
+        list: [],
+        noMore: false
+      },
+    })
   }
 
   // 查看文章
@@ -48,38 +44,27 @@ class Consult extends Component {
   };
 
   // 查看更多
-  viewMore = ()=> {
-    const {dispatch, main: {articlesData, current, articleLists}} = this.props;
-    if (articleLists.length === articlesData.pagination.total) return;
-    dispatch({
-      type: 'main/changeState',
-      payload: {
-        current: current + 1,
-      },
-    });
-    dispatch({
-      type:'main/getArticles',
-      payload: {
-        afficheType: 3
-      },
-    }).then(()=>{
-      const {dispatch, main: {articlesData}} = this.props;
-      dispatch({
-        type:'main/articleList',
-        payload: articleLists.concat(articlesData.list),
-      })
+  viewMore = async()=>{
+    const { global:{ articlesData:{ current, list, total } } } = this.props;
+    if(list.length >= total) return;
+    await this.props.dispatch({
+      type: 'global/getArticles',
+      payload:{
+        afficheType: 3,
+        current: current+1
+      }
     });
   };
 
   render() {
-    const {main: {articleLists, articlesData}} = this.props;
+    const {global: {articlesData: { list, noMore }}, loading} = this.props;
     const ArticleItem = (props) => {
       const data = props.data;
       return (
         <div children={styles.articleItem} onClick={()=>this.articleView(data.id)}>
           <div className={styles.publishTime}>
             <WhiteSpace size="lg" />
-            <span>{moment(data.uploadDt).format('YYYY年MM月DD年 hh:mm:ssa')}</span>
+            <span>{moment(data.uploadDt).format('YYYY年MM月DD日 h:mm:ssa')}</span>
           </div>
           <WingBlank size="lg">
             <WhiteSpace size="lg" />
@@ -100,14 +85,22 @@ class Consult extends Component {
     return (
       <DocumentTitle title="业务咨询">
         <div className={styles.homePage}>
-          {articleLists.length > 0 && articleLists.map((item, index)=>(
+          {list.map((item, index)=>(
             <ArticleItem data={item} key={index} />
           ))}
-          <div className={styles.more}>
-            <WhiteSpace size="lg" />
-            <span onClick={this.viewMore}>{articlesData && articlesData.pagination && (articleLists.length===articlesData.pagination.total) ? '没有更多了' : '查看更多'}</span>
-            <WhiteSpace size="lg" />
-          </div>
+          {list.length > 0 && (
+            <div className={styles.more}>
+              <WhiteSpace size="lg" />
+              <span onClick={this.viewMore}>{noMore ? '没有更多了' : '查看更多'}</span>
+              <WhiteSpace size="lg" />
+            </div>
+          )}
+          {list.length === 0 && !loading && (
+            <div className={styles.noData}>
+              <img src={noDataImg} alt="" width="100%" />
+              <div>暂无信息……</div>
+            </div>
+          )}
         </div>
       </DocumentTitle>
     );
